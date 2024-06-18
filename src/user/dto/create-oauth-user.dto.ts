@@ -12,4 +12,8 @@ export class CreateOauthUserDto {
   @IsOptional()
   @IsString()
   image?: string;
+
+  @IsNotEmpty()
+  @IsString()
+  provider: "credentials" | "google";
 }

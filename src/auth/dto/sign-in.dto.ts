@@ -1,11 +1,15 @@
-import { IsEmail, IsNotEmpty, IsString } from "class-validator";
+import { IsEmail, IsNotEmpty, IsOptional, IsString } from "class-validator";
 
 export class SignInDto {
   @IsNotEmpty()
   @IsEmail()
   email: string;
 
+  @IsOptional()
+  @IsString()
+  password?: string;
+
   @IsNotEmpty()
   @IsString()
-  password: string;
+  provider: "credentials" | "google";
 }
