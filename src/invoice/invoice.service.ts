@@ -1,8 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { Invoice, User } from '@prisma/client';
 import { AwsService } from 'src/aws/aws.service';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { CreateInvoiceDto } from "./dto"
+import { CreateInvoiceDto, DeleteInvoiceDto, UpdateInvoiceDto } from "./dto"
 
 @Injectable()
 export class InvoiceService {
@@ -29,5 +29,30 @@ export class InvoiceService {
 
   async getInvoices(userId: User["id"]): Promise<Invoice[]> {
     return await this.prisma.invoice.findMany({ where: { userId } })
+  }
+
+  async updateInvoice(userId: User["id"], dto: UpdateInvoiceDto) {
+    const invoice = await this.prisma.invoice.findUnique({ where: { id: dto. id }})
+
+    if (!invoice) throw new NotFoundException()
+
+    if (invoice.userId !== userId) throw new UnauthorizedException()
+    
+    return await this.prisma.invoice.update({
+      where: { id: dto.id },
+      data: { extractedText: dto.extractedText }
+    })
+  }
+
+  async deleteInvoice(userId: User["id"], dto: DeleteInvoiceDto) {
+    const invoice = await this.prisma.invoice.findUnique({ where: { id: dto. id }})
+
+    if (!invoice) throw new NotFoundException()
+
+    if (invoice.userId !== userId) throw new UnauthorizedException()
+
+    return await this.prisma.invoice.delete({
+      where: { id: dto.id, userId }
+    })
   }
 }
