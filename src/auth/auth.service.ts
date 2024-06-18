@@ -18,7 +18,8 @@ export class AuthService {
       id: user.id,
       name: user.name,
       email: user.email,
-      image: user.image
+      image: user.image,
+      provider: user.provider
     }
   }
 

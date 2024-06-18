@@ -1,73 +1,115 @@
 <p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
+  <a href="mailto:pvsserrano@gmail.com">
+    <img src="https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white" />        
+  </a>&nbsp;
+  <a href="https://www.linkedin.com/in/pvsserrano/">
+    <img src="https://img.shields.io/badge/linkedin-%230077B5.svg?&style=for-the-badge&logo=linkedin&logoColor=white" />
+  </a>
 </p>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+<br />
+<div align="center">
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+  <!-- PROJECT LOGO -->
+  <!--
+  <a href="https://github.com/github_username/repo_name">
+    <img src="images/logo.png" alt="Logo" width="80" height="80">
+  </a>
+  -->
 
-## Description
+  <h1>Invoice Scanner</h1>
+</div>
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+<!-- TECHS -->
 
-## Installation
+[![Nextjs][Nextjs-badge]][Nextjs-url]&nbsp;
+[![Tailwind][Tailwind-badge]][Tailwind-url]&nbsp;
+[![Typescript][Typescript-badge]][Typescript-url]&nbsp;
+[![Node][Node-badge]][Node-url]&nbsp;
+[![Nestjs][Nestjs-badge]][Nestjs-url]&nbsp;
+[![Prisma][Prisma-badge]][Prisma-url]&nbsp;
+[![Postgresql][Postgresql-badge]][Postgresql-url]&nbsp;
+[![JWT][JWT-badge]][JWT-url]&nbsp;
+[![EsLint][EsLint-badge]][EsLint-url]&nbsp;
 
-```bash
-$ npm install
-```
+<br />
 
-## Running the app
+<!-- ABOUT -->
 
-```bash
-# development
-$ npm run start
+## About The Project
 
-# watch mode
-$ npm run start:dev
+An app that allows users to upload an invoice image to a webpage, automatically extract its text using AWS Textract, and display a structured summary of the extracted data to the user.
 
-# production mode
-$ npm run start:prod
-```
+This repository is the backend of the application. The backend can be found [here](https://github.com/pauloserrano/invoice-scanner-frontend)
 
-## Test
+<br />
 
-```bash
-# unit tests
-$ npm run test
+<!-- GETTING STARTED -->
 
-# e2e tests
-$ npm run test:e2e
+## Getting Started
 
-# test coverage
-$ npm run test:cov
-```
+Access the app here: [Deploy]()
 
-## Support
+Alternatively, you can run a local copy by following the steps below.
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+<br />
 
-## Stay in touch
+### Installation
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+1. Clone both front and backend of this application
 
-## License
+   ```sh
+   git clone git@github.com:pauloserrano/invoice-scanner-frontend.git
 
-Nest is [MIT licensed](LICENSE).
+   git clone git@github.com:pauloserrano/invoice-scanner-backend.git
+   ```
+
+2. Install the dependencies for both projects
+   ```sh
+   npm i
+   ```
+3. Start the backend server
+   ```sh
+   npm run start:dev
+   ```
+4. Start the frontend app
+   ```sh
+   npm run dev
+   ```
+5. Access the app at [http://localhost:3000/](http://localhost:3000/)
+
+<br />
+
+<!-- CONTACT -->
+
+## My Contacts
+
+Email: [pvsserrano@gmail.com](mailto:pvsserrano@gmail.com)
+
+Linkedin: [Paulo Serrano](https://www.linkedin.com/in/pvsserrano/)
+
+<!-- MARKDOWN LINKS & IMAGES -->
+<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+
+[Typescript-badge]: https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white
+[Typescript-url]: https://www.typescriptlang.org/
+[EsLint-badge]: https://img.shields.io/badge/ESLint-4B3263?style=for-the-badge&logo=eslint&logoColor=white
+[EsLint-url]: https://eslint.org/
+[Sass-badge]: https://img.shields.io/badge/SASS-hotpink.svg?style=for-the-badge&logo=SASS&logoColor=white
+[Sass-url]: https://sass-lang.com/
+[Angular-badge]: https://img.shields.io/badge/angular-%23DD0031.svg?style=for-the-badge&logo=angular&logoColor=white
+[Angular-url]: https://angular.io/
+[Node-badge]: https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white
+[Node-url]: https://nodejs.org/
+[Nextjs-badge]: https://img.shields.io/badge/Next-black?style=for-the-badge&logo=next.js&logoColor=white
+[Nextjs-url]: https://nextjs.org/
+[Tailwind-badge]: https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white
+[Tailwind-url]: https://tailwindcss.com/
+[Prisma-badge]: https://img.shields.io/badge/Prisma-3982CE?style=for-the-badge&logo=Prisma&logoColor=white
+[Prisma-url]: https://www.prisma.io/
+[Postgresql-badge]: https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white
+[Postgresql-url]: https://www.postgresql.org/
+[Nestjs-badge]: https://img.shields.io/badge/nestjs-%23E0234E.svg?style=for-the-badge&logo=nestjs&logoColor=white
+[Nestjs-url]: https://nestjs.com/
+[JWT-badge]: https://img.shields.io/badge/JWT-black?style=for-the-badge&logo=JSON%20web%20tokens
+[JWT-url]: https://jwt.io/
