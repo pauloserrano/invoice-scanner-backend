@@ -1,10 +1,10 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { compareSync } from 'bcrypt';
 import { UserService } from 'src/user/user.service';
 import { CreateCredentialsUserDto, CreateOauthUserDto } from 'src/user/dto';
 import { SignInDto, JwtPayload } from './dto';
-import { Account, User } from '@prisma/client';
+import { Providers, User } from '@prisma/client';
 
 @Injectable()
 export class AuthService {
@@ -13,63 +13,70 @@ export class AuthService {
     private readonly jwtService: JwtService
   ) {}
 
-  async getSafeAccount(account: Account & { User: User }) {
+  async getSafeUser(user: User) {
     return {
-      id: account.id,
-      name: account.User.name,
-      email: account.email,
-      image: account.User.image
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      image: user.image
     }
   }
 
-  async validateAccount(dto: SignInDto) {
-    const account = await this.userService.findByEmail(dto.email, dto.provider);
-    if (!account) {
+  async validateUser(dto: SignInDto): Promise<User> {    
+    const user = await this.userService.findByEmail(dto.email, this.getProvider(dto.provider));
+    if (!user) {
       throw new UnauthorizedException()
     }
 
-    if (account.provider !== "CREDENTIAL"){
-      return this.getSafeAccount(account)
-    }
-
-    const isPasswordValid = compareSync(dto.password, account.hash)
-    if(!isPasswordValid && dto.provider === "credentials") {
+    const isAccessValid = (user.provider === Providers.GOOGLE || compareSync(dto.password, user.hash))
+    if(!isAccessValid) {
       throw new UnauthorizedException()
     }
 
-    return this.getSafeAccount(account)
+    return user
+  }
+
+  async signIn(dto: SignInDto) {
+    const user = await this.validateUser(dto)
+    
+    const payload = this.getPayload(user.id)
+    const tokens = await this.getTokens(payload)
+
+    return {
+      user: await this.getSafeUser(user),
+      ...tokens
+    }
   }
 
   async signUp(dto: CreateCredentialsUserDto) {
     return await this.userService.createWithCredentials(dto)
   }
 
-  async signIn(dto: SignInDto) {
-    const user = await this.validateAccount(dto)
-    
-    const payload: JwtPayload = { sub: user.id }
-    const tokens = await this.getTokens(payload)
+  async oauth(dto: CreateOauthUserDto) {
+    let user = await this.userService.findByEmail(dto.email, this.getProvider(dto.provider))
 
-    return {
-      user,
-      ...tokens
+    if (!user) {
+      user = await this.userService.createWithOAuth(dto)
+    }
+
+    return this.signIn({ email: dto.email, provider: dto.provider })
+  }
+
+  getProvider(provider: string): Providers {
+    switch (provider) {
+      case "google":
+        return Providers.GOOGLE
+      
+      case "credentials":
+        return Providers.CREDENTIAL
+    
+      default:
+        throw new BadRequestException("Invalid provider")
     }
   }
 
-  async oauth(dto: CreateOauthUserDto) {
-    let account = await this.userService.findByEmail(dto.email, dto.provider)
-
-    if (!account || account?.provider !== "GOOGLE") {
-      account = await this.userService.createWithOAuth(dto)
-    }
-    
-    const payload: JwtPayload = { sub: account.User.id }
-    const tokens = await this.getTokens(payload)
-
-    return {
-      user: await this.getSafeAccount(account),
-      ...tokens
-    }
+  getPayload(userId: User["id"]): JwtPayload {
+    return { sub: userId }
   }
 
   async getTokens(payload: JwtPayload) {

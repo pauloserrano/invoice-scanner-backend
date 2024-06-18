@@ -1,5 +1,5 @@
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
-import { Account, Providers, User } from '@prisma/client';
+import { Providers, User } from '@prisma/client';
 import { hashSync } from 'bcrypt';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateCredentialsUserDto, CreateOauthUserDto, UpdateUserDto } from './dto';
@@ -8,114 +8,52 @@ import { CreateCredentialsUserDto, CreateOauthUserDto, UpdateUserDto } from './d
 export class UserService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async findById(id: User["id"]): Promise<User & { Account: Account[] }> {
-    const user = await this.prisma.user.findUnique({ 
-      where: { id }, 
-      include: { Account: true } 
-    });
+  async findById(id: User["id"]): Promise<User> {
+    const user = await this.prisma.user.findUnique({ where: { id } });
 
-    if (!user) {
-      throw new NotFoundException();
-    }
+    if (!user) throw new NotFoundException();
 
     return user
   }
 
-  async findByEmail(email: string, provider?: string): Promise<Account & { User: User }> {
-    const account = await this.prisma.account.findFirst({ 
-      where: { email, provider: provider === "google" ? Providers.GOOGLE : Providers.CREDENTIAL },
-      include: { User: true } 
+  async findByEmail(email: string, provider?: Providers): Promise<User> {
+    return await this.prisma.user.findFirst({ 
+      where: { 
+        email,
+        provider: provider || undefined
+      }
     });
-    
-    return account
   }
 
-  async createWithCredentials(dto: CreateCredentialsUserDto): Promise<Account & { User: User }> {
-    const account = await this.findByEmail(dto.email, "credentials")
+  async createWithCredentials(dto: CreateCredentialsUserDto): Promise<User> {
+    const user = await this.findByEmail(dto.email, Providers.CREDENTIAL)
 
-    if (account && account.provider === Providers.CREDENTIAL) {
-      throw new ConflictException()
-    }
+    if (user) throw new ConflictException()
 
-    if (!account) {
-      const { Account, ...user } = await this.prisma.user.create({
-        data: {
-          name: dto.name,
-          image: dto.image,
-          Account: {
-            create: {
-              email: dto.email,
-              hash: hashSync(dto.password, 10),
-              provider: Providers.CREDENTIAL
-            }
-          }
-        },
-        include: { Account: true }
-      })
-      
-      return {
-        ...Account[0],
-        User: { ...user }
-      }
-    }
-
-    const { User, ...accountDetails } = await this.prisma.account.create({
+    return await this.prisma.user.create({
       data: {
         email: dto.email,
-        hash: hashSync(dto.password, 10),
         provider: Providers.CREDENTIAL,
-        userId: account.User.id
-      },
-      include: { User: true }
+        hash: hashSync(dto.password, 10),
+        name: dto.name,
+        image: dto.image
+      }
     })
-
-    return {
-      User,
-      ...accountDetails
-    }
   }
 
-  async createWithOAuth(dto: CreateOauthUserDto): Promise<Account & { User: User }> {
-    const account = await this.findByEmail(dto.email, "google")
+  async createWithOAuth(dto: CreateOauthUserDto): Promise<User> {
+    const user = await this.findByEmail(dto.email, Providers.GOOGLE)
 
-    if (account && account.provider === Providers.GOOGLE) {
-      throw new ConflictException()
-    }
+    if (user) throw new ConflictException()
 
-    if (!account) {
-      const { Account, ...user } = await this.prisma.user.create({
-        data: {
-          name: dto.name,
-          image: dto.image,
-          Account: {
-            create: {
-              email: dto.email,
-              provider: Providers.GOOGLE
-            }
-          }
-        },
-        include: { Account: true }
-      })
-
-      return {
-        ...Account[0],
-        User: { ...user }
-      }
-    }
-    
-    const { User, ...accountDetails } = await this.prisma.account.create({
+    return await this.prisma.user.create({
       data: {
         email: dto.email,
         provider: Providers.GOOGLE,
-        userId: account.User.id
-      },
-      include: { User: true }
+        name: dto.name,
+        image: dto.image
+      }
     })
-
-    return {
-      User,
-      ...accountDetails
-    }
   }
 
   // TODO: Implement update method

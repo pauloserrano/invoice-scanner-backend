@@ -3,17 +3,17 @@ import { IsEmail, IsNotEmpty, IsOptional, IsString } from "class-validator";
 export class CreateOauthUserDto {
   @IsNotEmpty()
   @IsEmail()
-  email: string;
+  email: string
 
   @IsOptional()
   @IsString()
-  name?: string;
+  name?: string
   
   @IsOptional()
   @IsString()
-  image?: string;
+  image?: string
 
   @IsNotEmpty()
   @IsString()
-  provider: "credentials" | "google";
+  provider: "google"
 }

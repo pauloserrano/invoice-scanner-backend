@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { TextractClient, DetectDocumentTextCommand } from "@aws-sdk/client-textract"
+import { TextractClient, AnalyzeDocumentCommand } from "@aws-sdk/client-textract"
 
 @Injectable()
 export class AwsService {
@@ -12,11 +12,12 @@ export class AwsService {
       }
     })
     
-    const res = await client.send(new DetectDocumentTextCommand({ Document: { Bytes: file.buffer }}))
-    
-    const textBlocks = res.Blocks.filter(b => b.BlockType === "LINE").map(b => b.Text)
-    
-    return textBlocks.join("\n")
+    const res = await client.send(new AnalyzeDocumentCommand({ 
+      Document: { Bytes: file.buffer },
+      FeatureTypes: [ "FORMS", "TABLES" ]
+    }))
+
+    return res.Blocks
   }
 
   async imageToTextMock(file: Express.Multer.File) {

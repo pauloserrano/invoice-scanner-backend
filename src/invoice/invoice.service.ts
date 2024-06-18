@@ -1,24 +1,33 @@
 import { Injectable } from '@nestjs/common';
-import { AuthService } from 'src/auth/auth.service';
+import { Invoice, User } from '@prisma/client';
 import { AwsService } from 'src/aws/aws.service';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { CreateInvoiceDto } from "./dto"
 
 @Injectable()
 export class InvoiceService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly awsService: AwsService,
-    private readonly authService: AuthService,
   ) {}
 
-  async handleFileUpload(file: Express.Multer.File) {
-    //const text = await this.awsService.imageToText(file);
-    const text = await this.awsService.imageToTextMock(file);
-    return { text }
+  async handleFileUpload(file: Express.Multer.File, userId: number) {
+    const data = await this.awsService.imageToText(file)
+    const textBlocks = data.filter(b => b.BlockType === "LINE").map(b => b.Text)
+
+    return this.createInvoice({ userId, extractedText: textBlocks.join("\n") })
   }
 
-  async testing(userId: number) {
-    console.log(userId)
-    return
+  async createInvoice({ userId, extractedText }: CreateInvoiceDto) {
+    return await this.prisma.invoice.create({
+      data: {
+        userId,
+        extractedText
+      }
+    })
+  }
+
+  async getInvoices(userId: User["id"]): Promise<Invoice[]> {
+    return await this.prisma.invoice.findMany({ where: { userId } })
   }
 }

@@ -13,7 +13,7 @@ export class UserController {
     return this.userService.findById(+id);
   }
 
-  // WIP
+  // TODO WIP STC
   @UseGuards(JwtGuard)
   @Patch(':id')
   @UsePipes(ValidationPipe)
@@ -21,7 +21,7 @@ export class UserController {
     return this.userService.update(+id, updateUserDto);
   }
 
-  // WIP
+  // TODO WIP STC
   @UseGuards(JwtGuard)
   @Delete(':id')
   remove(@Param('id') id: string) {

@@ -1,4 +1,4 @@
-import { Controller, Post, Req, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Controller, Get, Post, Req, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { InvoiceService } from './invoice.service';
 import { JwtGuard } from 'src/auth/guards/jwt.guard';
@@ -10,13 +10,13 @@ export class InvoiceController {
   @Post("upload")
   @UseGuards(JwtGuard)
   @UseInterceptors(FileInterceptor('file'))
-  upload(@UploadedFile() file: Express.Multer.File) {
-    return this.invoiceService.handleFileUpload(file);
+  async upload(@UploadedFile() file: Express.Multer.File, @Req() req: any) {
+    return await this.invoiceService.handleFileUpload(file, +req.userId);
   }
 
-  @Post()
+  @Get()
   @UseGuards(JwtGuard)
-  test(@Req() req: any) {
-    return this.invoiceService.testing(req.userId)
+  async getInvoices(@Req() req: any) {
+    return await this.invoiceService.getInvoices(+req.userId);
   }
 }

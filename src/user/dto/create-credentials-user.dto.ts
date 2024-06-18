@@ -3,17 +3,21 @@ import { IsEmail, IsNotEmpty, IsOptional, IsString } from "class-validator";
 export class CreateCredentialsUserDto {
   @IsNotEmpty()
   @IsEmail()
-  email: string;
+  email: string
 
   @IsNotEmpty()
   @IsString()
-  password: string;
+  password: string
 
   @IsOptional()
   @IsString()
-  name?: string;
+  name?: string
   
   @IsOptional()
   @IsString()
-  image?: string;
+  image?: string
+
+  @IsNotEmpty()
+  @IsString()
+  provider: "credentials"
 }
