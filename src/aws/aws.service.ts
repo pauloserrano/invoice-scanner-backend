@@ -12,11 +12,17 @@ export class AwsService {
       }
     })
     
-    const res = await client.send(new AnalyzeDocumentCommand({ 
-      Document: { Bytes: file.buffer },
-      FeatureTypes: [ "FORMS", "TABLES" ]
-    }))
+    try {
+      const res = await client.send(new AnalyzeDocumentCommand({ 
+        Document: { Bytes: file.buffer },
+        FeatureTypes: [ "FORMS", "TABLES" ]
+      }))
 
-    return res.Blocks
+      return res.Blocks
+      
+    } catch (error) {
+      console.error("Textract error: " + error)
+      throw error
+    }
   }
 }
