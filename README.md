@@ -40,7 +40,7 @@
 
 An app that allows users to upload an invoice image to a webpage, automatically extract its text using AWS Textract, and display a structured summary of the extracted data to the user.
 
-This repository is the backend of the application. The backend can be found [here](https://github.com/pauloserrano/invoice-scanner-frontend)
+This repository is the backend of the application. The frontend repository can be accessed [here](https://github.com/pauloserrano/invoice-scanner-frontend)
 
 <br />
 
@@ -56,27 +56,44 @@ Alternatively, you can run a local copy by following the steps below.
 
 ### Installation
 
-1. Clone both front and backend of this application
+**1.** Clone this repository
 
-   ```sh
-   git clone git@github.com:pauloserrano/invoice-scanner-frontend.git
+```sh
+git clone git@github.com:pauloserrano/invoice-scanner-backend.git
+```
 
-   git clone git@github.com:pauloserrano/invoice-scanner-backend.git
-   ```
+**2.** Install the dependencies
 
-2. Install the dependencies for both projects
-   ```sh
-   npm i
-   ```
-3. Start the backend server
-   ```sh
-   npm run start:dev
-   ```
-4. Start the frontend app
-   ```sh
-   npm run dev
-   ```
-5. Access the app at [http://localhost:3000/](http://localhost:3000/)
+```sh
+npm i
+```
+
+**3.** Create a .env file copying the .env.example variables
+
+- **PORT**: Your connection port. We use 4000 by default, since our frontend runs on 3000
+- **DATABASE_URL**: A postgres connection string like the following: "postgresql://janedoe:mypassword@localhost:5432/mydb"
+- **JWT_SECRET**: A random string used to sign jwt
+- **AWS_REGION, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY**: To get those you'll need to have an AWS account and follow their [Documentation](https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/loading-node-credentials-environment.html)
+
+**4.** Create the database using prisma
+
+```sh
+npm run prisma:migrate
+```
+
+**5.** Run the server
+
+```sh
+npm start
+```
+
+or
+
+```sh
+npm run start:dev
+```
+
+**6.** With this your backend should be running locally at the PORT of your choice. Next, you'll need to setup the [frontend](https://github.com/pauloserrano/invoice-scanner-frontend)
 
 <br />
 
